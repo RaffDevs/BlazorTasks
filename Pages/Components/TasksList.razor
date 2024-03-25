@@ -1,0 +1,39 @@
+﻿@using Task = TarefasBlazor.Models.Task
+<MudTable Items="@Tasks" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@IsLoading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Completed</MudTh>
+        <MudTh>Created At</MudTh>
+        <MudTh> </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Created At">@context.CreatedAt</MudTd>
+        <MudTd DataLabel="Completed">
+            <MudCheckBox @bind-Value="@context.Done" Color="Color.Primary"></MudCheckBox>
+        </MudTd>
+        <MudTd DataLabel="Delete">
+            <MudIconButton
+                Icon="@Icons.Material.Filled.Delete"
+                Color="Color.Error"
+                aria-label="delete"
+                @onclick="() => RemoveTarefa.InvokeAsync(context)">
+            </MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+@code {
+    [Parameter]
+    public List<Task> Tasks { get; set; }
+    
+    [Parameter]
+    public bool IsLoading { get; set; }
+    
+    [Parameter]
+    public EventCallback<Task> RemoveTarefa { get; set; }
+}

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using TaskModel = TarefasBlazor.Models.Task
 @using TarefasBlazor.Services
+@using TarefasBlazor.Pages.Components
 @inject TaskService taskService
 
 <PageTitle>Home</PageTitle>
@@ -11,7 +12,7 @@
             <MudTextField @bind-Value="_description" Disabled="_loading" Label="Nova Tarefa" Variant="Variant.Outlined"></MudTextField>
             @if (_hasErrors)
             {
-                <MudAlert Class="mt-2" Dense="true" Severity="Severity.Error">Meltdown is imminent</MudAlert>
+                <MudAlert Class="mt-2" Dense="true" Severity="Severity.Error">Campo não pode ser vazio</MudAlert>
             }
         </MudItem>
         <MudItem xs="12" md="8" Align="@Align.Start" Class="mt-3">
@@ -25,36 +26,11 @@
     }
     else if (!_tasks.Any())
     {
-        <MudText>Nenhuma tarefa disponivel!</MudText>
+        <AlertMessage Message="Nenhuma tarefa cadastrada!"/>
     }
     else
     {
-        <MudTable Items="@_tasks" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
-            <HeaderContent>
-                <MudTh>Id</MudTh>
-                <MudTh>Description</MudTh>
-                <MudTh>Completed</MudTh>
-                <MudTh>Created At</MudTh>
-                <MudTh> </MudTh>
-                <MudTh></MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="Id">@context.Id</MudTd>
-                <MudTd DataLabel="Description">@context.Description</MudTd>
-                <MudTd DataLabel="Created At">@context.CreatedAt</MudTd>
-                <MudTd DataLabel="Completed">
-                    <MudCheckBox @bind-Value="@context.Done" Color="Color.Primary"></MudCheckBox>
-                </MudTd>
-                <MudTd DataLabel="Delete">
-                    <MudIconButton
-                        Icon="@Icons.Material.Filled.Delete"
-                        Color="Color.Error"
-                        aria-label="delete"
-                        @onclick="() => DeletaTarefa(context)">
-                    </MudIconButton>
-                </MudTd>
-            </RowTemplate>
-        </MudTable>
+        <TasksList Tasks="_tasks" IsLoading="_loading" RemoveTarefa="DeletaTarefa"/>
     }
 
 </MudContainer>
@@ -81,7 +57,7 @@
             _hasErrors = true;
             return;
         }
-        
+
         var task = new TaskModel
         {
             Id = Guid.NewGuid(),
@@ -93,12 +69,12 @@
         _tasks.Add(task);
         _description = string.Empty;
         _hasErrors = false;
-
     }
-
-    private void DeletaTarefa(TaskModel context)
+    
+    private void DeletaTarefa(TaskModel task)
     {
-        _tasks.Remove(_tasks.FirstOrDefault(t => t.Id == context.Id) ?? throw new InvalidOperationException());
+        Console.Write("Hey!");
+        _tasks.Remove(task);
     }
-
 }
+

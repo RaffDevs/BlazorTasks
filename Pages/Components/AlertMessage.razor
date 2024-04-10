@@ -1,8 +1,12 @@
 ﻿<MudAlert Severity="Severity.Normal">
     @Message
+    @ChildContent
 </MudAlert>
 
 @code {
     [Parameter]
     public string Message { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 }

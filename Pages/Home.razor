@@ -1,9 +1,6 @@
 ﻿@page "/"
-@using TaskModel = TarefasBlazor.Models.Task
-@using TarefasBlazor.Services
 @using TarefasBlazor.Pages.Components
-@inject TaskService taskService
-
+@inherits HomeBase;
 <PageTitle>Home</PageTitle>
 
 <MudContainer>
@@ -26,7 +23,9 @@
     }
     else if (!_tasks.Any())
     {
-        <AlertMessage Message="Nenhuma tarefa cadastrada!"/>
+        <AlertMessage Message="Nenhuma tarefa cadastrada!">
+            <p>Sem tarefas!</p>
+        </AlertMessage>
     }
     else
     {
@@ -34,47 +33,3 @@
     }
 
 </MudContainer>
-
-
-@code {
-
-    private List<TaskModel> _tasks = [];
-    private bool _loading = true;
-    private bool _hasErrors = false;
-    private string? _description = string.Empty;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var data = await taskService.GetTasks();
-        _tasks = data.ToList();
-        _loading = false;
-    }
-
-    private void AddTask()
-    {
-        if (String.IsNullOrEmpty(_description))
-        {
-            _hasErrors = true;
-            return;
-        }
-
-        var task = new TaskModel
-        {
-            Id = Guid.NewGuid(),
-            Description = _description,
-            CreatedAt = DateTime.Now,
-            Done = false
-        };
-
-        _tasks.Add(task);
-        _description = string.Empty;
-        _hasErrors = false;
-    }
-    
-    private void DeletaTarefa(TaskModel task)
-    {
-        Console.Write("Hey!");
-        _tasks.Remove(task);
-    }
-}
-

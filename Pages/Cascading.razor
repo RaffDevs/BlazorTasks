@@ -1,0 +1,20 @@
+﻿@page "/Cascading"
+@inherits CascadingBase;
+
+
+<h3>Cascading</h3>
+
+
+<CascadingValue Value="Message">
+    <MudGrid>
+        <MudItem xs="12" sm="6">
+            <MudButton Variant="Variant.Filled">@Message</MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudButton Variant="Variant.Outlined">@Message</MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudButton Variant="Variant.Text">@Message</MudButton>
+        </MudItem>
+    </MudGrid>
+</CascadingValue>
